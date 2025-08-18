@@ -13,13 +13,38 @@ patch(PaymentScreen.prototype, {
      * @returns {boolean} true if validation passes, false otherwise
      */
     async validateStock() {
-        const order = this.currentOrder;
-        const orderlines = order.get_orderlines();
+       const order = this.currentOrder;
+
+      // First, validate customer phone number
+        const customer = order.get_partner();
+        if (!customer) {
+            await this.popup.add(ErrorPopup, {
+                title: _t("Customer Required"),
+                body: _t("Please select a customer before proceeding with payment."),
+            });
+            return false;
+        }
         
+        // Check if customer phone starts with +2
+        const customerPhone = customer.phone || customer.mobile || '';
+        if (!customerPhone.startsWith('+2')) {
+            await this.popup.add(ErrorPopup, {
+                title: _t("Invalid Customer Phone"),
+                body: _t(`Customer phone number must start with '+2'.\n\nCustomer: ${customer.name}\nPhone: ${customerPhone || 'Not provided'}\n\nPlease select a customer with a valid phone number.`),
+            });
+            return false;
+        }
+
+
+        const orderlines = order.get_orderlines();
+
+        
+
         // Check if stock validation is enabled
         if (!this.pos.config.enable_stock_validation) {
             return true;
         }
+        
         
         // Check each orderline for sufficient stock
         for (const line of orderlines) {
