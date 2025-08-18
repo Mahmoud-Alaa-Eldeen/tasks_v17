@@ -9,6 +9,7 @@
         - Navigate to the payment screen.
         - Automatically select the cash payment method.
         - Automatically set the customer to 'administrator'.
+        
     """,
     'author': 'Custom Development',
     'depends': ['point_of_sale'],
