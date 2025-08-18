@@ -6,6 +6,7 @@
         This module adds validation to the POS payment process to check if products
         have sufficient stock (> 5 units) before allowing payment. If stock is below
         the threshold, it shows a message "This product under of the Re-Order Point measure".
+        
     """,
     'author': 'Custom Development',
     'depends': ['point_of_sale', 'stock'],
