@@ -1,0 +1,54 @@
+/* @odoo-module */
+
+import { ProductScreen } from "@point_of_sale/app/screens/product_screen/product_screen";
+import { patch } from "@web/core/utils/patch";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
+import { _t } from "@web/core/l10n/translation";
+
+patch(ProductScreen.prototype, {
+    async onClickPay() {
+        console.log('clicked custom pay btn');
+        // First validate stock
+        const stockValid = await this.validateStock();
+        if (!stockValid) {
+            return false;
+        }
+        // If stock validation passes, proceed with original logic
+        return super.onClickPay();
+    },
+
+    /**
+     * Validate stock before processing payment
+     * This method is duplicated from payment_screen.js to be available in product_screen.js
+     * @returns {boolean} true if validation passes, false otherwise
+     */
+    async validateStock() {
+        const order = this.currentOrder;
+        const orderlines = order.get_orderlines();
+        
+        // Check if stock validation is enabled
+        if (!this.pos.config.enable_stock_validation) {
+            return true;
+        }
+        
+        // Check each orderline for sufficient stock
+        for (const line of orderlines) {
+            if (!line.hasValidStock()) {
+                const message = line.getStockValidationMessage();
+                const productName = line.product.display_name;
+                const currentStock = line.getCurrentStock();
+                const minThreshold = this.pos.config.min_stock_threshold || 5;
+                
+                // Show error popup with stock validation message
+                await this.popup.add(ErrorPopup, {
+                    title: _t("Stock Validation Error"),
+                    body: _t(`${productName}\n\n${message}\n\nCurrent Stock: ${currentStock}\nRequired: > ${minThreshold}`),
+                });
+                
+                return false;
+            }
+        }
+        
+        return true;
+    },
+});

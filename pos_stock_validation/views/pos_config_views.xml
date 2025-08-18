@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit POS Config form view to add stock validation settings -->
+        <record id="view_pos_config_form_stock_validation" model="ir.ui.view">
+            <field name="name">pos.config.form.stock.validation</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='row mt16 o_settings_container']" position="after">
+                                       <div class="row mt16 o_settings_container" >
+                    <setting string="Stock Validation" help="Validate product stock quantities before payment">
+                        <field name="enable_stock_validation" widget="boolean_toggle"/>
+                        <div class="content-group mt16" invisible="not enable_stock_validation">
+                            <div class="row">
+                                <label string="Minimum Stock Threshold" for="min_stock_threshold" class="col-lg-4 o_light_label"/>
+                                <field name="min_stock_threshold"/>
+                            </div>
+                        </div>
+                    </setting>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
