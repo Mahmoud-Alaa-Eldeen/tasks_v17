@@ -10,6 +10,7 @@
     'author': 'Custom Development',
     'depends': ['point_of_sale', 'stock'],
     'data': [
+        'security/ir.model.access.csv',
         'views/pos_config_views.xml',
     ],
     'assets': {

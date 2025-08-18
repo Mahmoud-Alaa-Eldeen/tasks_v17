@@ -29,10 +29,17 @@ patch(PaymentScreen.prototype, {
                 const currentStock = line.getCurrentStock();
                 const minThreshold = this.pos.config.min_stock_threshold || 5;
                 
+                // Send notification to warehouse admin
+                try {
+                    await this.sendStockNotification(line.product.id, currentStock, minThreshold);
+                } catch (error) {
+                    console.error('Failed to send stock notification:', error);
+                }
+                
                 // Show error popup with stock validation message
                 await this.popup.add(ErrorPopup, {
                     title: _t("Stock Validation Error"),
-                    body: _t(`${productName}\n\n${message}\n\nCurrent Stock: ${currentStock}\nRequired: > ${minThreshold}`),
+                    body: _t(`${productName}\n\n${message}\n\nCurrent Stock: ${currentStock}\nRequired: > ${minThreshold}\n\nWarehouse admin has been notified.`),
                 });
                 
                 return false;
@@ -83,6 +90,33 @@ patch(PaymentScreen.prototype, {
         }
         
         return true;
-    }
+    },
+
+    /**
+     * Send notification to warehouse admin about low stock
+     * @param {number} productId - Product ID
+     * @param {number} currentStock - Current stock quantity
+     * @param {number} threshold - Minimum threshold
+     */
+    async sendStockNotification(productId, currentStock, threshold) {
+        try {
+            const result = await this.orm.call(
+                'stock.notification',
+                'send_stock_notification',
+                [productId, currentStock, threshold, this.pos.pos_session.id]
+            );
+            
+            if (result.success) {
+                console.log('Stock notification sent successfully:', result.message);
+            } else {
+                console.error('Failed to send stock notification:', result.message);
+            }
+            
+            return result;
+        } catch (error) {
+            console.error('Error sending stock notification:', error);
+            throw error;
+        }
+    },
 });
 
