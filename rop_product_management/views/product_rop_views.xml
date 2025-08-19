@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ROP Product Tree View -->
+        <record id="view_product_rop_tree" model="ir.ui.view">
+            <field name="name">product.template.rop.tree</field>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <tree string="ROP Products (Qty &lt; 5)" default_order="rop_qty_available asc" create="false" edit="false">
+                    <field name="name" string="Product Name"/>
+                    <field name="default_code" string="Internal Reference"/>
+                    <field name="categ_id" string="Category"/>
+                    <field name="rop_qty_available" string="Available Qty"/>
+                    <field name="uom_id" string="Unit of Measure"/>
+                    <field name="list_price" string="Sales Price"/>
+                    <field name="active" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- ROP Product Search View -->
+        <!-- <record id="view_product_rop_search" model="ir.ui.view">
+            <field name="name">product.template.rop.search</field>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <search string="Search ROP Products">
+                    <field name="name" string="Product" filter_domain="[('name','ilike',self)]"/>
+                    <field name="default_code" string="Internal Reference"/>
+                    <field name="categ_id" string="Category"/>
+                    <separator/>
+                    <filter string="Low Stock (Qty &lt; 5)" name="low_stock" 
+                            domain="[('rop_qty_available', '&lt;', 5)]"/>
+                    <filter string="Out of Stock (Qty = 0)" name="out_of_stock" 
+                            domain="[('rop_qty_available', '=', 0)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Category" name="group_category" 
+                                domain="[]" context="{'group_by':'categ_id'}"/>
+                        <filter string="Unit of Measure" name="group_uom" 
+                                domain="[]" context="{'group_by':'uom_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record> -->
+
+        <!-- ROP Product Form View (Read-only) -->
+        <record id="view_product_rop_form" model="ir.ui.view">
+            <field name="name">product.template.rop.form</field>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <form string="ROP Product Details" create="false" edit="false">
+                    <sheet>
+                        <field name="image_1920" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                            <div>
+                                <field name="default_code" readonly="1"/>
+                            </div>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="categ_id" readonly="1"/>
+                                <field name="uom_id" readonly="1"/>
+                                <field name="rop_qty_available" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="list_price" readonly="1"/>
+                                <field name="standard_price" readonly="1"/>
+                                <field name="active" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="General Information">
+                                <group>
+                                    <field name="type" readonly="1"/>
+                                    <field name="sale_ok" readonly="1"/>
+                                    <field name="purchase_ok" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="Description">
+                                <field name="description" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ROP Product Action -->
+        <record id="action_product_rop" model="ir.actions.act_window">
+            <field name="name">ROP Products</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_rop_tree"/>
+            <!-- <field name="search_view_id" ref="view_product_rop_search"/> -->
+            <field name="domain">[('type', '=', 'product'), ('active', '=', True), ('rop_qty_available', '&lt;', 5)]</field>
+            <field name="context">{'search_default_low_stock': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No products found with low stock!
+                </p>
+                <p>
+                    This view shows products with quantity less than 5 units.
+                    Products are automatically filtered based on their available quantity.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

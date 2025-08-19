@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Demo Products with Low Stock -->
+        <record id="demo_product_low_stock_1" model="product.template">
+            <field name="name">Low Stock Product 1</field>
+            <field name="default_code">LSP001</field>
+            <field name="type">product</field>
+            <field name="list_price">25.0</field>
+            <field name="standard_price">15.0</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+        </record>
+
+        <record id="demo_product_low_stock_2" model="product.template">
+            <field name="name">Low Stock Product 2</field>
+            <field name="default_code">LSP002</field>
+            <field name="type">product</field>
+            <field name="list_price">45.0</field>
+            <field name="standard_price">30.0</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+        </record>
+
+        <!-- Demo Stock Quants for Low Stock -->
+        <record id="demo_quant_low_stock_1" model="stock.quant">
+            <field name="product_id" ref="demo_product_low_stock_1"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="quantity">3.0</field>
+        </record>
+
+        <record id="demo_quant_low_stock_2" model="stock.quant">
+            <field name="product_id" ref="demo_product_low_stock_2"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ROP Menu Item -->
+        <menuitem id="menu_rop_root"
+                  name="ROP Management"
+                  groups="group_rop_access,stock.group_stock_manager,stock.group_stock_user,base.group_system"
+                  sequence="50"/>
+
+        <menuitem id="menu_product_rop"
+                  name="ROP Products"
+                  parent="menu_rop_root"
+                  action="action_product_rop"
+                  groups="group_rop_access,stock.group_stock_manager,stock.group_stock_user,base.group_system"
+                  sequence="10"/>
+
+        <!-- Alternative: Add to Inventory menu -->
+        <menuitem id="menu_product_rop_inventory"
+                  name="ROP Products"
+                  parent="stock.menu_stock_root"
+                  action="action_product_rop"
+                  groups="group_rop_access,stock.group_stock_manager,stock.group_stock_user,base.group_system"
+                  sequence="15"/>
+
+    </data>
+</odoo>

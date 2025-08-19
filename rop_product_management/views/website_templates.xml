@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ROP Products Website Template -->
+        <template id="rop_products_page" name="ROP Products Page">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h1 class="text-center mb-4">ROP Products (Low Stock)</h1>
+                                <p class="text-center text-muted">Products with quantity less than 5 units</p>
+                                
+                                <t t-if="not products">
+                                    <div class="alert alert-info text-center">
+                                        <h4>No Low Stock Products Found!</h4>
+                                        <p>All products have sufficient stock levels.</p>
+                                    </div>
+                                </t>
+                                
+                                <t t-if="products">
+                                    <div class="row">
+                                        <t t-foreach="products" t-as="product">
+                                            <div class="col-md-6 col-lg-4 mb-4">
+                                                <div class="card h-100">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title" t-esc="product['name']"/>
+                                                        <p class="card-text">
+                                                            <strong>Code:</strong> <span t-esc="product['default_code']"/><br/>
+                                                            <strong>Category:</strong> <span t-esc="product['categ_id']"/><br/>
+                                                            <strong>Available:</strong> 
+                                                            <span class="badge badge-warning" t-esc="product['qty_available']"/>
+                                                            <span t-esc="product['uom_name']"/><br/>
+                                                            <strong>Price:</strong> $<span t-esc="product['list_price']"/>
+                                                        </p>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <small class="text-muted">
+                                                            <i class="fa fa-exclamation-triangle text-warning"></i>
+                                                            Low Stock Alert
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>
