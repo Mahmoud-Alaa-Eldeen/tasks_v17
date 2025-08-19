@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-<!-- 
-     <record id="menu_contactus" model="website.menu">
-            <field name="name">Contact us</field>
-            <field name="url">/contactus</field>
-            <field name="page_id" ref="website.contactus_page"/>
+
+        <record id="real_page" model="website.page">
+            <field name="url">/shop/rop/realtime</field>
+            <field name="is_published">True</field>
+            <field name="view_id" ref="realtime_rop_page"/>
+            <field name="track">True</field>
+            <field name="website_meta_description">This is the real qty products page</field>
+        </record> 
+
+
+        <record id="website_menu_realtime_rop" model="website.menu">
+            <field name="name">Real-time ROP</field>
+            <field name="url">/shop/rop/realtime</field>
+            <field name="page_id" ref="rop_product_management.real_page"/>
             <field name="parent_id" ref="website.main_menu"/>
-            <field name="sequence" type="int">60</field>
+            <field name="sequence" type="int">61</field>
         </record>
--->
+
+
+
         <record id="rop_page" model="website.page">
             <field name="url">/shop/rop</field>
             <field name="is_published">True</field>

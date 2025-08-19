@@ -48,3 +48,29 @@ class ProductTemplate(models.Model):
             'target': 'new',
             'context': {'active_id': self.id},
         }
+    
+    @api.model
+    def get_realtime_rop_products(self):
+        """Get products with quantity greater than 5 for real-time view"""
+        products = self.env['product.template'].search([
+            ('type', '=', 'product'),
+            ('active', '=', True)
+        ])
+        
+        realtime_products = []
+        for product in products:
+            total_qty = sum(product.product_variant_ids.mapped('qty_available'))
+            if total_qty > 5:
+                realtime_products.append({
+                    'id': product.id,
+                    'name': product.name,
+                    'default_code': product.default_code or '',
+                    'qty_available': total_qty,
+                    'list_price': product.list_price,
+                    'categ_id': product.categ_id.name,
+                    'uom_name': product.uom_id.name,
+                    'last_updated': fields.Datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                })
+        
+        return realtime_products
+    

@@ -1,5 +1,6 @@
 from odoo import http
 from odoo.http import request
+from odoo.exceptions import UserError
 
 class ROPController(http.Controller):
 
