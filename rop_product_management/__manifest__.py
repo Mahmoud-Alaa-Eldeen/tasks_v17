@@ -22,6 +22,7 @@
         'security/ir.model.access.csv',
         'views/product_rop_views.xml',
         'views/website_templates.xml',
+        'views/quantity_wizard_views.xml',
         'views/menu.xml',
         'data/website_data.xml',
     ],

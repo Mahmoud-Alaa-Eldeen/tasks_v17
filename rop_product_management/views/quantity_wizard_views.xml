@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Quantity Update Wizard Form -->
+        <record id="view_product_quantity_wizard_form" model="ir.ui.view">
+            <field name="name">product.quantity.wizard.form</field>
+            <field name="model">product.quantity.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Update Product Quantity">
+                    <group>
+                        <field name="product_id" readonly="1"/>
+                        <field name="current_quantity" readonly="1"/>
+                        <field name="new_quantity" required="1"/>
+                        <field name="reason" placeholder="Optional reason for this update..."/>
+                    </group>
+                    <footer>
+                        <button name="action_update_quantity" type="object" string="Update Quantity" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Wizard Action -->
+        <record id="action_product_quantity_wizard" model="ir.actions.act_window">
+            <field name="name">Update Product Quantity</field>
+            <field name="res_model">product.quantity.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

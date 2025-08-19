@@ -37,3 +37,14 @@ class ProductTemplate(models.Model):
     def _compute_rop_qty(self):
         for product in self:
             product.rop_qty_available = sum(product.product_variant_ids.mapped('qty_available'))
+
+    def action_open_quantity_wizard(self):
+        """Open quantity update wizard"""
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Update Product Quantity',
+            'res_model': 'product.quantity.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'active_id': self.id},
+        }

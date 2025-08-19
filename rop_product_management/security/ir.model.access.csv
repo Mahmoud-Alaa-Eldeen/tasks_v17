@@ -1,3 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_product_rop_admin,product.template.rop.admin,stock.model_product_template,group_rop_access,1,1,1,1
 access_product_rop_user,product.template.rop.user,stock.model_product_template,base.group_user,1,0,0,0
+access_quantity_wizard_admin,product.quantity.wizard.admin,model_product_quantity_wizard,group_rop_access,1,1,1,1
+access_quantity_wizard_stock_manager,product.quantity.wizard.stock.manager,model_product_quantity_wizard,stock.group_stock_manager,1,1,1,1
+access_quantity_wizard_stock_user,product.quantity.wizard.stock.user,model_product_quantity_wizard,stock.group_stock_user,1,1,1,1

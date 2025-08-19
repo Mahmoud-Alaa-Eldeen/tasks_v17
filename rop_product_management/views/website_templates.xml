@@ -24,6 +24,11 @@
                                         <t t-foreach="products" t-as="product">
                                             <div class="col-md-6 col-lg-4 mb-4">
                                                 <div class="card h-100">
+                                                    <!-- Product Image -->
+                                                    <div class="card-img-top text-center p-3" style="height: 200px; background-color: #f8f9fa;">
+                                                        <i class="fa fa-cube fa-5x text-muted"></i>
+                                                    </div>
+                                                    
                                                     <div class="card-body">
                                                         <h5 class="card-title" t-esc="product['name']"/>
                                                         <p class="card-text">
@@ -34,7 +39,18 @@
                                                             <span t-esc="product['uom_name']"/><br/>
                                                             <strong>Price:</strong> $<span t-esc="product['list_price']"/>
                                                         </p>
+                                                        
+                                                        <!-- Update Quantity Button -->
+                                                        <button type="button" 
+                                                                class="btn btn-primary btn-sm w-100 mt-2"
+                                                                onclick="openQuantityModal(this)"
+                                                                t-att-data-product-id="product['id']"
+                                                                t-att-data-product-name="product['name']"
+                                                                t-att-data-current-qty="product['qty_available']">
+                                                            <i class="fa fa-edit"></i> Update Product Quantity
+                                                        </button>
                                                     </div>
+                                                    
                                                     <div class="card-footer">
                                                         <small class="text-muted">
                                                             <i class="fa fa-exclamation-triangle text-warning"></i>
@@ -50,8 +66,92 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Quantity Update Modal -->
+                <div class="modal fade" id="quantityModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Update Product Quantity</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span>                                </button>
+                            </div>
+                            <form id="quantityForm" method="post" action="/shop/rop/update-quantity">
+                                <div class="modal-body">
+                                    <input type="hidden" id="productId" name="product_id"/>
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    
+                                    <div class="form-group">
+                                        <label>Product Name:</label>
+                                        <input type="text" id="productName" class="form-control" readonly="true"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Current Quantity:</label>
+                                        <input type="number" id="currentQty" class="form-control" readonly="true"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="newQuantity">New Quantity: <span class="text-danger">*</span></label>
+                                        <input type="number" id="newQuantity" name="new_quantity" 
+                                               class="form-control" required="true" min="0" step="1"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="reason">Reason for Update:</label>
+                                        <textarea id="reason" name="reason" class="form-control" rows="3" 
+                                                placeholder="Optional reason for this update..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Update Quantity</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JavaScript for Modal -->
+                <script>
+                    function openQuantityModal(button) {
+                        var productId = button.getAttribute('data-product-id');
+                        var productName = button.getAttribute('data-product-name');
+                        var currentQty = button.getAttribute('data-current-qty');
+                        
+                        document.getElementById('productId').value = productId;
+                        document.getElementById('productName').value = productName;
+                        document.getElementById('currentQty').value = currentQty;
+                        document.getElementById('newQuantity').value = currentQty;
+                        
+                        $('#quantityModal').modal('show');
+                    }
+                </script>
+            </t>
+        </template>
+
+        <!-- Success Message Template -->
+        <template id="quantity_update_success" name="Quantity Update Success">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6 text-center">
+                                <div class="alert alert-success mt-5">
+                                    <h4><i class="fa fa-check-circle"></i> Success!</h4>
+                                    <p t-esc="message"/>
+                                    <a href="/shop/rop" class="btn btn-primary mt-3">
+                                        <i class="fa fa-arrow-left"></i> Back to ROP Products
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </t>
         </template>
 
     </data>
 </odoo>
+
+   
